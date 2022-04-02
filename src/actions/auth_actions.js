@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FACEBOOK_LOGIN_SUCCESS, FACEBOOK_LOGIN_FAIL } from "./types";
 
-import { Facebook } from "expo";
+import * as Facebook from "expo";
 
 // AsyncStorage.setItem('key', 'value'); AsyncStorage.getItem('key');
 export const facebookLogin = () => async (dispatch) => {
@@ -16,6 +16,7 @@ export const facebookLogin = () => async (dispatch) => {
 };
 
 const handleFacebookLogin = async (dispatch) => {
+  await Facebook.initializeAsync("1800842623447611");
   let { type, token } = await Facebook.logInWithReadPermissionsAsync(
     "1800842623447611",
     { permissions: ["public_profile"] }
@@ -23,4 +24,6 @@ const handleFacebookLogin = async (dispatch) => {
   if (type === "cancel") {
     return dispatch({ type: FACEBOOK_LOGIN_FAIL });
   }
+  await AsyncStorage.setItem("fb_token", token);
+  dispatch({ type: FACEBOOK_LOGIN_SUCCESS, payload: token });
 };

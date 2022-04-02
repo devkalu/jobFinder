@@ -1,7 +1,13 @@
 import { View, Text, Button, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-const AuthScreen = ({ navigation }) => {
+const AuthScreen = ({ navigation, facebookLogin }) => {
+  useEffect(() => {
+    facebookLogin();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text>AuthScreen</Text>
@@ -20,4 +26,4 @@ const styles = StyleSheet.create({
     marginTop: 200,
   },
 });
-export default AuthScreen;
+export default connect(null, actions)(AuthScreen);
